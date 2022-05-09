@@ -1,0 +1,6 @@
+# Project exclude paths
+/auth/target/
+/commons/target/
+/logging/target/
+/StartApplication/target/
+/system/target/

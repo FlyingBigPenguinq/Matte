@@ -1,0 +1,48 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  profiles:
+    active: dev
+  devtools:
+    restart:
+      #需要实时更新的目录
+      additional-paths: resources/**,static/**,templates/**
+#  quartz:
+#    job-store-type: jdbc
+#    jdbc:
+#      initialize-schema: never
+#    scheduler-name: spring-boot-quartz-scheduler
+  # redis配置
+  redis:
+    # 地址
+    host: 127.0.0.1
+    # 端口，默认为6379
+    port: 6379
+    # 连接超时时间
+    timeout: 10s
+    lettuce:
+      pool:
+        # 连接池中的最小空闲连接
+        min-idle: 0
+        # 连接池中的最大空闲连接
+        max-idle: 8
+        # 连接池的最大数据库连接数
+        max-active: 8
+        # #连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: -1m
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+
+auth:
+  jwt:
+    header: Authorization
+    expire: 604800 #7天，秒单位
+    secret: ji8n3439n439n43ld9ne9343fdfer49hji8n3439n439n43ld9ne9343fdfer49hji8n3439n439n43ld9ne9343fdfer49hji8n3439n439n43ld9ne9343fdfer49h
+
+#密码加密传输，前端公钥加密，后端私钥解密
+rsa:
+  private_key: MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBANXV8xpV5VUDbNV/ai4SfBfPF3Z6wZe4cry4Ft1Apye9XI/TsXLJcXeC7VjuGOBGZhUMGamf8Wt8XRnkUoydzCOlyJ+5MNhHh9UbL0oxmkQV608DEFP5bJf83tNUzqVr9OZvOVU7PuCMArvyf4YEygjELaOHhCRtIKvclvFvCRM7AgMBAAECgYAnUtUF/s3RuHOHP4szNcsERd02uJRpZk4TTndF8OHMeRJQkMmNJmZrZ/Rl6kNA2zFipXsCqpsm/RPR8x8LJOmpPoBfMyVPe+7M/67cDaG3QgX1fW8wfsW/Y/DlzFl4+/7UZkSkyBZJR1aA7/yazAAQKTOXnDzrYtdy6K0llMMiIQJBAOyniiLi4VofD9M+7aR6bkKWbsClikE1wzbgxr8YNNatlYhHVgKHimzSbaF8HTRno+ZVZO+1hxsBdExLhPh7MbcCQQDnUOIxhmkYGSN0YPIqGjVqtq5l1UsUcE5+GxH+//3DlqpDHD6szGD2frkQk7TCjyrO+yXfKqPIgM4IxiZ/CRqdAkEAiXiRf853xdhBYx8tANy17Cxizbnb5CGM8vYDvcIb/5D6Sh3WUsXVnX1nfeUROf3ycbytU6oJf6CKpD9CUO2PZQJAHJfF7gNEWGM7G7akGIo20iMUuae86SDcwv/LoK66CoRENZl3MdrtnWqaq67maCpUS1OGIejeZ/lr/m+n8IoKjQJBAIi00VFW+eJjyRbTMMl4Npov/RcuVSmQi5Qh8rbEwSZ/fHKVdYOas8FCVTJ+6SU2rhynDCDaLC7am1Fbxh5duVE=

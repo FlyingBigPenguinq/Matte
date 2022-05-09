@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.syl.mapper.SysUserMapper">
+    <insert id="insertUserRole">
+        INSERT INTO sys_user_role(user_id,role_id) VALUES
+        <foreach collection="roles" item="item" separator=",">
+            (#{userId},#{item})
+        </foreach>
+    </insert>
+    <delete id="updateUserRole">
+        DELETE FROM sys_user_role WHERE user_id = #{userId};
+        INSERT INTO sys_user_role(user_id,role_id) VALUES
+        <foreach collection="roles" item="item" separator=",">
+            (#{userId},#{item})
+        </foreach>
+    </delete>
+    <delete id="deleteUserRoleByUserId">
+        DELETE FROM sys_user_role WHERE user_id IN
+        <foreach collection="id" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+    <select id="getInfoByUsername" resultMap="userRoleMap">
+        SELECT
+            su.*,
+            sr.id as role_id,
+            sr.name as role_name,
+            sr.code as role_code,
+            sr.description as role_description,
+            sr.create_time as role_create_time,
+            sr.update_time as role_update_time,
+            sr.create_by as role_create_by,
+            sr.update_by as role_update_by
+        FROM
+            sys_user su
+                LEFT JOIN sys_user_role syr ON syr.user_id = su.id
+                LEFT JOIN sys_role sr ON sr.id = syr.role_id
+        where su.username = #{username}
+    </select>
+    <select id="listPage" resultMap="userRoleMap">
+        SELECT
+            su.*,
+            sr.id as role_id,
+            sr.name as role_name,
+            sr.code as role_code,
+            sr.description as role_description,
+            sr.create_time as role_create_time,
+            sr.update_time as role_update_time,
+            sr.create_by as role_create_by,
+            sr.update_by as role_update_by
+        FROM
+            sys_user su
+                LEFT JOIN sys_user_role syr ON syr.user_id = su.id
+                LEFT JOIN sys_role sr ON sr.id = syr.role_id
+        ${ew.customSqlSegment}
+    </select>
+    <resultMap id="userRoleMap" type="com.syl.dto.SysUserDTO">
+        <!--user的信息-->
+        <id column="id" property="id"></id>
+        <result column="username" property="username"></result>
+        <result column="password" property="password"></result>
+        <result column="name" property="name"></result>
+        <result column="avatar" property="avatar"></result>
+        <result column="tel" property="tel"></result>
+        <result column="email" property="email"></result>
+        <result column="address" property="address"></result>
+        <result column="birthday" property="birthday"></result>
+        <result column="gender" property="gender"></result>
+        <result column="status" property="status"></result>
+        <result column="create_time" property="createTime"></result>
+        <!--user内部的roleList信息-->
+        <collection property="roles" ofType="com.syl.entity.SysRole">
+            <id column="role_id" property="id"></id>
+            <result column="role_name" property="name"></result>
+            <result column="role_description" property="description"></result>
+            <result column="role_code" property="code"></result>
+            <result column="role_create_time" property="createTime"></result>
+            <result column="role_update_time" property="updateTime"></result>
+            <result column="role_create_by" property="createBy"></result>
+            <result column="role_update_by" property="updateBy"></result>
+        </collection>
+    </resultMap>
+</mapper>
